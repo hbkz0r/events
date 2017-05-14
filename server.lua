@@ -1,20 +1,17 @@
-RegisterServerEvent("chatCommandEntered")
-RegisterServerEvent("chatMessageEntered")
+AddEventHandler('chatMessage', function(source, n, message)
+    cm = stringsplit(message, " ")
 
-AddEventHandler("chatMessage", function(p, color, msg)
-    if msg:sub(1, 1) == "/" then
-        fullcmd = stringSplit(msg, " ")
-        cmd = fullcmd[1]
-        args = makeArgs(fullcmd)
-        if cmd == "/heal" then
-		local ped = tostring(args[1])
-            CancelEvent()
-            TriggerClientEvent("heal", ped)
-        end
-    end
+    if(cm[1] == "/heal") then
+		CancelEvent()
+		if tablelength(cm) > 1 then
+			local tG = tonumber(cm[2])
+			TriggerClientEvent("heal", tG)
+			end
+		end
+	end
 end)
 
-function stringSplit(self, delimiter)
+function stringsplit(self, delimiter)
   local a = self:Split(delimiter)
   local t = {}
 
@@ -25,10 +22,8 @@ function stringSplit(self, delimiter)
   return t
 end
 
-function makeArgs(cmd)
-    args = {}
-    for i = 2, #cmd, 1 do
-        table.insert(args, cmd[i])
-    end
-    return args
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
 end
