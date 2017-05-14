@@ -1,16 +1,16 @@
 Citizen.CreateThread(function()
     while true do
-        Wait(0)
-		local plyPos = GetEntityCoords(GetPlayerPed(-1),  true)
-        if IsEntityDead(GetPlayerPed(-1)) then 
-            Wait(5000)
+        Wait(500)
+		local ped = GetPlayerPed(-1)
+		local plyPos = GetEntityCoords(ped,  true)
+        if IsEntityDead(ped) then
             NetworkResurrectLocalPlayer(plyPos, true, true, false)
-			ClearPedTasks(playerPed)
-			Wait(1000)
-			ragdol = 1
-			DisableControlAction(2, 303, true)
-			DisableControlAction(2, 246, true)
-        		TriggerEvent("chatMessage", "[INFO]", { 255,0,0}, "Wait for paramedics to resurect you.")
-        end
-    end
+			ClearPedTasks(ped)
+			Citizen.Wait(500)
+			TriggerEvent('deadan', ped)
+			TriggerServerEvent("deaths")
+        	TriggerEvent("chatMessage", "[System]", { 255,0,0}, "You are dead.")
+        	TriggerEvent("chatMessage", "[System]", { 255,0,0}, "Call for paramedics to revive you or start the reviving timer using : /starttimer.")
+		end
+	end
 end)
